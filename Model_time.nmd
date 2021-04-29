@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<project enableR="false" name="Init_Method" paramIdx="0">
+    <clockParams bot="0.0" delay="0" delta="1.0" method="Discrete" top="14400.0"/>
+    <paramSet name="Param_set_1">
+        <parameter ident="s_minA" slider="true" sliderHi="10.0" sliderLo="0.0" sliderStep="0.01" unit="">5</parameter>
+        <parameter ident="s_maxA" slider="true" sliderHi="10.0" sliderLo="0.0" sliderStep="0.01" unit="">6</parameter>
+        <parameter ident="s_minB" slider="true" sliderHi="10.0" sliderLo="0.0" sliderStep="0.01" unit="">5</parameter>
+        <parameter ident="s_maxB" slider="true" sliderHi="10.0" sliderLo="0.0" sliderStep="0.01" unit="">6</parameter>
+        <parameter ident="omega" slider="true" sliderHi="100.0" sliderLo="0.0" sliderStep="0.01" unit="">1440</parameter>
+        <parameter ident="corrA" slider="true" sliderHi="1.0" sliderLo="0.0" sliderStep="0.01" unit="">0.5</parameter>
+        <parameter ident="corrB" slider="true" sliderHi="1.0" sliderLo="0.0" sliderStep="0.01" unit="">0.5</parameter>
+    </paramSet>
+    <capsule mainCapsule="true" name="Init_Method">
+        <components>
+            <State dimension="1" history="100" initial="0.0" nonNeg="false" typeOf="VARIABLE" unit="" codeOK="true" comment="" name="xA" nameBase="xA" x="176.5" y="90.5">sA * COS(zA)</State>
+            <State dimension="1" history="100" initial="0.0" nonNeg="false" typeOf="VARIABLE" unit="" codeOK="true" comment="" name="yA" nameBase="yA" x="176.5" y="130.5">sA * SIN(zA)</State>
+            <State dimension="1" history="100" initial="50&#xA;" nonNeg="false" typeOf="VARIABLE" unit="" codeOK="true" comment="" name="xB" nameBase="xB" x="176.5" y="234.5">sB * COS(zB)</State>
+            <State dimension="1" history="100" initial="0.0" nonNeg="false" typeOf="VARIABLE" unit="" codeOK="true" comment="" name="yB" nameBase="yB" x="176.5" y="274.5">sB * SIN(zB)</State>
+            <State dimension="1" history="100" initial="0.0" nonNeg="false" typeOf="SEQUENCE" unit="" codeOK="true" comment="" name="zA" nameBase="zA" x="176.5" y="170.5">(Period1 == 1)? ((Period2 == 1)? AtoB : AawayB) : Aind
+// both 1 attr, 1,0 repell, 0, any: random</State>
+            <State dimension="1" history="100" initial="0.0" nonNeg="false" typeOf="SEQUENCE" unit="" codeOK="true" comment="" name="zB" nameBase="zB" x="176.5" y="306.5">(Period1 == 1)? ((Period2 == 1)? BtoA : BawayA) : Bind</State>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="sA" nameBase="sA" x="70.0" y="134.0">UNIFORM(s_minA,s_maxA)</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="sB" nameBase="sB" x="78.0" y="270.0">UNIFORM(s_minB,s_maxB)</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="Period1" nameBase="Period1" x="28.5" y="206.0">(SIN((2*PI*TIME())/omega) &gt; 0)? 1: 0</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="Period2" nameBase="Period2" x="83.5" y="206.0">(SIN((2*PI*TIME())/(omega/2)) &gt; 0)? 1 : 0</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="AtoB" nameBase="AtoB" x="27.0" y="94.0">UNIFORM(ATAN2((yA-yB),(xA-xB)) - PI - (1 - corrA)*PI/2, ATAN2((yA-yB),(xA-xB)) - PI + (1 - corrA)*PI/2)</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="AawayB" nameBase="AawayB" x="59.0" y="94.0">UNIFORM(ATAN2((yA-yB),(xA-xB)) - (1 - corrA)*PI/2, ATAN2((yA-yB),(xA-xB)) + (1 - corrA)*PI/2)</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="Aind" nameBase="Aind" x="108.0" y="94.0">UNIFORM(-PI, PI)</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="BtoA" nameBase="BtoA" x="29.0" y="310.0">UNIFORM(ATAN2((yB-yA),(xB-xA)) - PI - (1 - corrB)*PI/2, ATAN2((yB-yA),(xB-xA)) - PI + (1 - corrB)*PI/2)</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="BawayA" nameBase="BawayA" x="61.0" y="310.0">UNIFORM(ATAN2((yB-yA),(xB-xA)) - (1 - corrB)*PI/2, ATAN2((yB-yA),(xB-xA)) + (1 - corrB)*PI/2)</Term>
+            <Term constant="false" external="false" graphFunc="false" inpin="false" outpin="false" spy="false" unit="" codeOK="true" comment="" name="Bind" nameBase="Bind" x="108.0" y="310.0">UNIFORM(-PI, PI)</Term>
+            <Table contplot="false" plotFrequency="1" plotInterval="1" timeColumnWidth="0.0" arrayDim="0" arrayInput="false" caption="Output" height="100.0" multipin="false" pinned="false" webInclude="true" width="100.0" codeOK="true" comment="" name="Output" nameBase="Output" x="301.0" y="181.0"><input columnWidth="0.0" header="Period1" value="Period1"/>
+                <input columnWidth="0.0" header="Period2" value="Period2"/>
+                <input columnWidth="0.0" header="xA" value="xA"/>
+                <input columnWidth="0.0" header="yA" value="yA"/>
+                <input columnWidth="0.0" header="xB" value="xB"/>
+                <input columnWidth="0.0" header="yB" value="yB"/>
+            </Table>
+            <Scatterchart compare="false" connectdots="true" contplot="false" dotsize="1" plotinterval="1" tolerance="0.001" xmax="150.0" xmin="-150.0" ymax="150.0" ymin="-150.0" arrayDim="0" arrayInput="false" dataSave="/Users/ludovicaluisavissat/Desktop/Paper_method/NMB_models_paper/TimeA2.csv" caption="A" height="100.0" multipin="false" pinned="false" webInclude="true" width="100.0" codeOK="true" comment="" name="A" nameBase="A" x="301.0" y="109.0"><xcomp legend="xA" value="xA"/>
+                <ycomp legend="yA" value="yA"/>
+            </Scatterchart>
+            <Scatterchart compare="false" connectdots="true" contplot="false" dotsize="1" plotinterval="1" tolerance="0.001" xmax="150.0" xmin="-150.0" ymax="50.0" ymin="-150.0" arrayDim="0" arrayInput="false" dataSave="/Users/ludovicaluisavissat/Desktop/Paper_method/NMB_models_paper/TimeB2.csv" caption="B" height="100.0" multipin="false" pinned="false" webInclude="true" width="100.0" codeOK="true" comment="" name="B" nameBase="B" x="301.0" y="261.0"><xcomp legend="xB" value="xB"/>
+                <ycomp legend="yB" value="yB"/>
+            </Scatterchart>
+        </components>
+        <bindings/>
+        <connection source="yB" target="B" slocus="NEUTRAL" tlocus="SCATTERY" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xB" target="B" slocus="NEUTRAL" tlocus="SCATTERX" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yA" target="A" slocus="NEUTRAL" tlocus="SCATTERY" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xA" target="A" slocus="NEUTRAL" tlocus="SCATTERX" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yB" target="Output" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xB" target="Output" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yA" target="Output" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xA" target="Output" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="Period2" target="Output" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="Period1" target="Output" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yB" target="BawayA" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yA" target="BawayA" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xB" target="BawayA" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xA" target="BawayA" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yB" target="BtoA" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yA" target="BtoA" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xB" target="BtoA" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xA" target="BtoA" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yA" target="AawayB" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yB" target="AawayB" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xA" target="AawayB" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xB" target="AawayB" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yA" target="AtoB" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="yB" target="AtoB" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xA" target="AtoB" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="xB" target="AtoB" slocus="NEUTRAL" tlocus="NEUTRAL" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="Period1" target="zB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="Period2" target="zB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="BtoA" target="zB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="BawayA" target="zB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="Bind" target="zB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="Period1" target="zA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="Period2" target="zA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="AtoB" target="zA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="AawayB" target="zA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="Aind" target="zA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="sB" target="yB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="zB" target="yB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="sB" target="xB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="zB" target="xB" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="sA" target="yA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="zA" target="yA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="sA" target="xA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <connection source="zA" target="xA" slocus="NEUTRAL" tlocus="FLOW" conArrow="true" psource="" ptarget="">
+            <mline color="#ffdcdc"/>
+        </connection>
+        <phantomList name="xA"/>
+        <phantomList name="yA"/>
+        <phantomList name="xB"/>
+        <phantomList name="yB"/>
+        <phantomList name="sA"/>
+        <phantomList name="sB"/>
+        <phantomList name="zA"/>
+        <phantomList name="zB"/>
+        <phantomList name="Period1"/>
+        <phantomList name="Period2"/>
+        <phantomList name="AtoB"/>
+        <phantomList name="AawayB"/>
+        <phantomList name="Aind"/>
+        <phantomList name="BtoA"/>
+        <phantomList name="BawayA"/>
+        <phantomList name="Bind"/>
+    </capsule>
+    <analytics/>
+    <globals/>
+    <globalFuncs/>
+    <imageFile></imageFile>
+    <layoutData compHeight="370.0" compWidth="199.0" compX="0.0" compY="-1.0" moniker="main.Table_0">
+        <properties/>
+    </layoutData>
+    <layoutData compHeight="370.0" compWidth="520.0" compX="474.0" compY="0.0" moniker="main.B">
+        <properties/>
+    </layoutData>
+    <layoutData compHeight="370.0" compWidth="520.0" compX="0.0" compY="0.0" moniker="main.A">
+        <properties/>
+    </layoutData>
+    <layoutData compHeight="370.0" compWidth="546.0" compX="74.0" compY="336.0" moniker="main.Output">
+        <properties/>
+    </layoutData>
+    <rtParams height="600.0" inputColumnSize="3" splitLocation="0.014028056112224449" width="1000.0"/>
+    <docState>HTML</docState>
+    <prelude></prelude>
+    <enums/>
+</project>
